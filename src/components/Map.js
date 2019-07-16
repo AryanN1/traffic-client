@@ -1,17 +1,16 @@
-import ReactMapboxGl from 'react-mapbox-gl';
+/* global google */
+import GoogleMapReact from 'google-map-react';
 import React from 'react';
 import axios from 'axios';
-
-const MapBox = ReactMapboxGl({
-  accessToken: 'pk.eyJ1IjoiYW5haW1pIiwiYSI6ImNqeGpwNHRsYjB1Nnozb3FwajBsZ2g2cnMifQ.w1kfsRpnsBM4JNacrxaWiQ',
-});
 
 class Map extends React.Component {
   constructor(props) {
     super(props)
   
     this.state = {
-      incidents :[]
+      incidents :[],
+      geoJsonData: {},
+      heatmapVisible: false
     }
   }
   componentDidMount() {
@@ -22,6 +21,37 @@ class Map extends React.Component {
     })
     .catch(error => {
 	    console.log(error)
+    })
+
+    axios.get('http://localhost:8080/incidents-geo')
+    .then(response => {
+      this.setState ({geoJsonData: response.data})
+      console.log(this.state.geoJsonData);
+      
+    })
+    .catch(error => {
+	    console.log(error)
+    })
+  }
+
+ 
+  onMapClick({x, y, lat, lng, event}) {
+    console.log(this._googleMap)
+    if (this._googleMap !== undefined) {
+      const point = new google.maps.LatLng(lat, lng)
+      this._googleMap.heatmap.data.push(point)
+     // this.toggleHeatMap()
+    }
+  }
+
+  toggleHeatMap() {
+    this.setState({
+      heatmapVisible: !this.state.heatmapVisible
+    }, () => {      
+      if (this._googleMap !== undefined) {       
+        this._googleMap.heatmap.setMap(this.state.heatmapVisible ?
+          this._googleMap.map_ : null)      
+      }          
     })
   }
 
@@ -34,14 +64,21 @@ class Map extends React.Component {
     };
 
     return (
-      <MapBox
-        style="mapbox://styles/mapbox/streets-v11"
-        containerStyle={style}
-        center={[ -118.2437 ,34.0522 ]} 
-      />
+      <GoogleMapReact          
+        ref={(el) => this._googleMap = el}          
+        bootstrapURLKeys={{key: 'AIzaSyDV28j5AHP16DHoVTxHnz9QVwDSAYzUIPk'}}          
+        defaultCenter={{
+          lat: 34.0522,
+          lng: -118.2437
+        }}         
+        style={style}
+        defaultZoom={11}          
+        heatmapLibrary={true}          
+        heatmap={this.state.geoJsonData}          
+        onClick={this.onMapClick.bind(this)} 
+      ></GoogleMapReact>
     );
   }
 }
-
 
 export default Map;
