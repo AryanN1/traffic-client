@@ -1,13 +1,15 @@
 import React from 'react';
 import Map from './components/Map.js';
-import header from './components/header';
+import Navbar from './components/Navbar';
 
 
 class App extends React.Component {
   render() {
     return (
-      <Map />
-      //<header/>
+    <div>
+      <Navbar/>
+      <Map/>
+      </div>
     );
   }
 }

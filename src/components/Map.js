@@ -37,7 +37,7 @@ class Map extends React.Component {
  
   onMapClick({x, y, lat, lng, event}) {
     console.log(this._googleMap)
-    if (this._googleMap !== undefined) {
+    if (this._googleMap !== undefined && this._googleMap.heatmap && this._googleMap.heatmap.data) {
       const point = new google.maps.LatLng(lat, lng)
       this._googleMap.heatmap.data.push(point)
      // this.toggleHeatMap()
@@ -58,7 +58,7 @@ class Map extends React.Component {
   render() {
     const style = {
       position: 'absolute',
-      top: 0,
+      top: '4rem',
       bottom: 0,
       width: '100%'
     };
