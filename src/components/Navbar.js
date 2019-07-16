@@ -1,4 +1,7 @@
 import React from 'react';
+import logo from './logo.png';
+
+
 
 const styles ={
   container: {
@@ -19,7 +22,7 @@ const styles ={
 
 const Navbar = () => {
   return <div style={styles.container}> 
-    <img src='assets/logo.png' style={styles.image}></img>
+    <img src={logo} style={styles.image}></img>
   </div>
 }
 
