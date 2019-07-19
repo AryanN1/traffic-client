@@ -1,8 +1,6 @@
 import React from 'react';
 import logo from './logo.png';
 
-
-
 const styles ={
   container: {
     width: '100vw',
@@ -11,13 +9,10 @@ const styles ={
     display: 'flex',
     justifyContent: 'center'
   },
-  
   image :{
     height: '4rem',
     width: 'auto',
   }
-  
-
 }
 
 const Navbar = () => {

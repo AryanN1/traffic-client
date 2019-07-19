@@ -2,7 +2,6 @@
 import GoogleMapReact from 'google-map-react';
 import React from 'react';
 import axios from 'axios';
-
 class Map extends React.Component {
   constructor(props) {
     super(props)
@@ -16,34 +15,38 @@ class Map extends React.Component {
   componentDidMount() {
     axios.get('https://stormy-scrubland-50043.herokuapp.com/incidents')
     .then(response => {
-      this.setState ({incidents: response.data})
-      console.log(this.state.incidents);
-    })
-    .catch(error => {
-	    console.log(error)
-    })
-
-    axios.get('https://stormy-scrubland-50043.herokuapp.com/incidents-geo')
-    .then(response => {
-      this.setState ({geoJsonData: response.data})
-      console.log(this.state.geoJsonData);
+      setTimeout(() => {
+        this.setState ({incidents: response.data})
+        console.log(this.state.incidents);
+      }, 1000)
       
     })
     .catch(error => {
-	    console.log(error)
+        console.log(error)
+    })
+    axios.get('https://stormy-scrubland-50043.herokuapp.com/incidents-geo')
+    .then(response => {
+      setTimeout(() => {
+      this.setState ({geoJsonData: response.data})
+      console.log(this.state.geoJsonData);
+      }, 1000)
+      
+      
+    })
+    .catch(error => {
+        console.log(error)
     })
   }
-
  
   onMapClick({x, y, lat, lng, event}) {
     console.log(this._googleMap)
     if (this._googleMap !== undefined && this._googleMap.heatmap && this._googleMap.heatmap.data) {
+      console.log('setting data')
       const point = new google.maps.LatLng(lat, lng)
       this._googleMap.heatmap.data.push(point)
-     // this.toggleHeatMap()
+      this.toggleHeatMap()
     }
   }
-
   toggleHeatMap() {
     this.setState({
       heatmapVisible: !this.state.heatmapVisible
@@ -54,7 +57,6 @@ class Map extends React.Component {
       }          
     })
   }
-
   render() {
     const style = {
       position: 'absolute',
@@ -62,9 +64,14 @@ class Map extends React.Component {
       bottom: 0,
       width: '100%'
     };
-
     return (
-      <GoogleMapReact          
+      <div> 
+       { (this.state.geoJsonData && 
+          this.state.geoJsonData.positions &&
+          this.state.geoJsonData.positions.length > 0) ? 
+        
+ 
+        <GoogleMapReact          
         ref={(el) => this._googleMap = el}          
         bootstrapURLKeys={{key: 'AIzaSyDV28j5AHP16DHoVTxHnz9QVwDSAYzUIPk'}}          
         defaultCenter={{
@@ -74,10 +81,15 @@ class Map extends React.Component {
         style={style}
         defaultZoom={11}          
         heatmapLibrary={true}          
-        heatmap={this.state.geoJsonData}          
+        heatmap={this.state.geoJsonData}       
       ></GoogleMapReact>
+       :
+     
+       <div><p>Waiting for data...</p></div>
+      }
+      
+      </div>
     );
   }
 }
-
 export default Map;
