@@ -10,7 +10,7 @@ class Map extends React.Component {
     this.state = {
       incidents :[],
       geoJsonData: {},
-      heatmapVisible: false
+      heatmapVisible: true
     }
   }
   componentDidMount() {
