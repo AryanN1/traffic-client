@@ -14,7 +14,7 @@ class Map extends React.Component {
     }
   }
   componentDidMount() {
-    axios.get('http://localhost:8080/incidents')
+    axios.get('https://stormy-scrubland-50043.herokuapp.com/incidents')
     .then(response => {
       this.setState ({incidents: response.data})
       console.log(this.state.incidents);
@@ -23,7 +23,7 @@ class Map extends React.Component {
 	    console.log(error)
     })
 
-    axios.get('http://localhost:8080/incidents-geo')
+    axios.get('https://stormy-scrubland-50043.herokuapp.com/incidents-geo')
     .then(response => {
       this.setState ({geoJsonData: response.data})
       console.log(this.state.geoJsonData);
