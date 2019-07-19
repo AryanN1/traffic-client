@@ -75,7 +75,6 @@ class Map extends React.Component {
         defaultZoom={11}          
         heatmapLibrary={true}          
         heatmap={this.state.geoJsonData}          
-        onClick={this.onMapClick.bind(this)} 
       ></GoogleMapReact>
     );
   }
