@@ -10,7 +10,7 @@ const styles ={
     justifyContent: 'space-between'
   },
   logInContainer: {
-    display: 'flex',
+    display: 'none',
     justifyContent: 'end'
   },
   homeContainer: {
