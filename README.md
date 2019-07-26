@@ -25,4 +25,4 @@ Implement JWT to have admin and user credentials to log in
 
 ## Screenshot
 
-![](http://i.imgur.com/qCQuxg6.jpg)
+![](https://i.imgur.com/KDWoYaT.png)
