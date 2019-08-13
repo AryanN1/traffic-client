@@ -4,7 +4,6 @@ import React from 'react';
 import axios from 'axios';
 import Modal from 'react-modal'
 
-
 Modal.setAppElement('#root');
 
 class Map extends React.Component {
@@ -21,30 +20,10 @@ class Map extends React.Component {
   }
   componentDidMount() {
     this.getIncidents();
-
-    axios.get('https://stormy-scrubland-50043.herokuapp.com/incidents-geo')
-    .then(response => {
-      setTimeout(() => {
-      this.setState ({geoJsonData: response.data})
-      }, 1000)
-      
-      
-    })
-    .catch(error => {
-        console.log(error)
-    })
   }
-    // set a state and then condition to show or hide the modal,
-      //pass a function as a prop
-          //one to open the model, on to close the modal
-  //body = { lat: this.state.lat, lng: this.state.lng }
-  //showingModal: false{
-    //setState({ lat: lat, lng: lng, showingModal: true})
-  //}
-  
+
   onMapClick = ({x, y, lat, lng, event}) => {
     this.setState({ showModal: true, location: { lat, lng } })
-    console.log(x, y, lat, lng, event)
   }
 
   toggleHeatMap() {
@@ -59,29 +38,28 @@ class Map extends React.Component {
   }
 
   handleHideModal = () => this.setState({ showModal: false, location: {} })
-
   getIncidents = () => {
-    axios.get('https://stormy-scrubland-50043.herokuapp.com/incidents')
+    axios.get('https://stormy-scrubland-50043.herokuapp.com/incidents-geo')
     .then(response => {
       setTimeout(() => {
-        this.setState ({incidents: response.data})
+      this.setState ({geoJsonData: response.data})
       }, 1000)
-      
     })
-    .catch(error => {
+      .catch(error => {
         console.log(error)
     })
   }
 
   postIncident = () => {
-    axios.post('https://stormy-scrubland-50043.herokuapp.com/incidents', { location: this.state.location })
+    axios.post('https://stormy-scrubland-50043.herokuapp.com/incidents', 
+    { location: this.state.location })
     .then(response => {
+      this.handleHideModal()
       this.getIncidents();
     })
   }
   
   render() {
-
     const style = {
       position: 'absolute',
       top: '4rem',
@@ -98,7 +76,7 @@ class Map extends React.Component {
         marginRight           : '-50%',
         transform             : 'translate(-50%, -50%)'
       }
-     };
+    };
 
     return (
       <div> 
@@ -113,7 +91,7 @@ class Map extends React.Component {
             <button onClick={this.postIncident}>Submit</button>
           </Modal>
 
-       { (this.state.geoJsonData && 
+      { (this.state.geoJsonData && 
           this.state.geoJsonData.positions &&
           this.state.geoJsonData.positions.length > 0) ? 
         
@@ -140,7 +118,5 @@ class Map extends React.Component {
     );
   }
 }
-
-
 
 export default Map;

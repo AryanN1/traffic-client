@@ -17,6 +17,7 @@ class Home extends React.Component {
         <p> This app shows the a heatmap of the traffic area around Los Angeles.</p>
         <p> The more traffic there is in a certain region, the more red hot the area is.</p>
         <p>The less traffic there is, the less intense of the color</p>
+        <p>Users can click on the map to submit new traffic data</p>
         <br/>
         <strong>Key:</strong> 
           <p>Red: The most amout of traffic</p>
